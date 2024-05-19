@@ -2,10 +2,7 @@ import subprocess
 import os
 import shutil
 
-
-REPO_URL = "git@github.com:Agilefreaks/handbook.git"
-TMP_HANDBOOK_PATH = "./tmp/handbook_repo"
-TMP_DATA_SOURCE_PATH = "./tmp/data_source"
+from config import REPO_URL, TMP_HANDBOOK_PATH, TMP_DATA_SOURCE_PATH
 
 
 def run():
