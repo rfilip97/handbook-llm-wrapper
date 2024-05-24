@@ -13,11 +13,11 @@ class Assistant:
         self.index = load_data(TMP_DATA_SOURCE_PATH)
         self.prompt_template = PromptTemplate.from_template(PREPROMPT)
 
-    def formatted_query_for(self, query):
+    def __formatted_query_for(self, query):
         return self.prompt_template.format(query=query)
 
     def ask(self, question):
-        formatted_query = self.formatted_query_for(question)
+        formatted_query = self.__formatted_query_for(question)
 
         return self.index.query(formatted_query, llm=self.llm)
 
