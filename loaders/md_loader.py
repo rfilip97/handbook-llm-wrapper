@@ -4,12 +4,15 @@ from langchain.text_splitter import MarkdownTextSplitter
 from langchain.embeddings import SentenceTransformerEmbeddings
 from unstructured.partition.text import partition_text
 from langchain.docstore.document import Document
+from config import CHUNK_SIZE, CHUNK_OVERLAP
 
 
-def load_data(path):
+def load_data(path, chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP):
     loader = DirectoryLoader(path, glob="**/*.md")
 
-    text_splitter = MarkdownTextSplitter()
+    text_splitter = MarkdownTextSplitter(
+        chunk_size=chunk_size, chunk_overlap=chunk_overlap
+    )
 
     documents = []
     for doc in loader.load():
