@@ -3,7 +3,7 @@ from assistant import Assistant
 assistant = Assistant()
 
 while True:
-    question = input("What would you like to know about us? ")
+    question = input("\n(AI) What would you like to know about us?\n> ")
     answer = assistant.ask(question)
 
-    print(answer)
+    print(f"\n{answer}")
