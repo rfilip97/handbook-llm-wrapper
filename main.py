@@ -4,6 +4,10 @@ assistant = Assistant()
 
 while True:
     question = input("\n(AI) What would you like to know about us?\n> ")
-    answer = assistant.ask(question)
 
+    if assistant.should_exit(question):
+        assistant.say_goodbye()
+        break
+
+    answer = assistant.ask(question)
     print(f"\n{answer}")

@@ -20,3 +20,9 @@ class Assistant:
         formatted_query = self.formatted_query_for(question)
 
         return self.index.query(formatted_query, llm=self.llm)
+
+    def should_exit(self, question):
+        return True if question.strip().lower() == "/bye" else False
+
+    def say_goodbye(self):
+        print("Goodbye!")
