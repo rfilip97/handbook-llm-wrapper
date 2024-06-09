@@ -25,7 +25,6 @@ def clone_repository():
 
 
 def copy_md_files():
-
     if not os.path.exists(TMP_DATA_SOURCE_PATH):
         os.makedirs(TMP_DATA_SOURCE_PATH)
 
