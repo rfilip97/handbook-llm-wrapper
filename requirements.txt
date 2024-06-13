@@ -3,3 +3,4 @@ pickle-mixin
 faiss-cpu
 langchain
 unstructured
+llama-cpp-python

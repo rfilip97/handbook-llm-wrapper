@@ -1,13 +1,13 @@
+import asyncio
 from assistant import Assistant
 
-assistant = Assistant()
+if __name__ == "__main__":
+    assistant = Assistant()
 
-while True:
-    question = input("\n(AI) What would you like to know about us?\n> ")
+    question = input("Enter your question (or type '/bye' to exit): ")
 
-    if assistant.should_exit(question):
-        assistant.say_goodbye()
-        break
+    while not assistant.should_exit(question):
+        asyncio.run(assistant.ask(question))
+        question = input("\nEnter your question (or type '/bye' to exit): ")
 
-    answer = assistant.ask(question)
-    print(f"\n{answer}")
+    assistant.say_goodbye()
