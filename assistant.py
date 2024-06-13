@@ -1,18 +1,23 @@
 import asyncio
-import logging
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, AsyncGenerator
 import data.prepare as data_prep
 from vector_store.index import VectorStore
 from config import TMP_DATA_SOURCE_PATH, MODEL_NAME
 from langchain_core.prompts import PromptTemplate
 from prompts.pre_prompt import PREPROMPT
 from langchain_community.llms import LlamaCpp
-from langchain_core.callbacks import CallbackManager, StreamingStdOutCallbackHandler
+from langchain_core.callbacks import CallbackManager
+from langchain_core.callbacks.base import BaseCallbackHandler
+
+
+class CustomStreamingHandler(BaseCallbackHandler):
+    def on_llm_new_token(self, token, **kwargs):
+        print(f">>>>>>>({token})<<<<<<<")
 
 
 class Assistant:
     def __init__(self):
-        self.callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
+        self.callback_manager = CallbackManager([CustomStreamingHandler()])
         self.llm = LlamaCpp(
             model_path="/Users/razvan/llms/ggml-model-Q4_1.gguf",  # TODO: Fix ~ expansion not working
             temperature=0,
@@ -26,16 +31,22 @@ class Assistant:
             path=TMP_DATA_SOURCE_PATH
         ).build_vector_store()
         self.prompt_template = PromptTemplate.from_template(PREPROMPT)
+        self.max_context_length = 512
 
-    def __formatted_query_for(self, question: str, context: str) -> str:
+    def __formatted_query_for(self, question, context):
         return self.prompt_template.format(query=question, context=context)
 
-    async def ask(self, question: str):
+    async def ask(self, question: str) -> AsyncGenerator[str, None]:
         try:
-            self.vector_store_index.query(question, llm=self.llm)
-
+            results = self.vector_store_index.query(question, llm=self.llm)
+            context = " ".join(
+                [getattr(doc, "page_content", str(doc)) for doc in results]
+            )
+            formatted_query = self.__formatted_query_for(question, context)
+            async for token in self.llm.astream(formatted_query):
+                yield token
         except Exception as e:
-            logging.error(f"An error occurred: {e}")
+            yield f"An error occurred: {e}"
 
     def should_exit(self, question: str) -> bool:
         return question.strip().lower() == "/bye"
