@@ -15,13 +15,12 @@ class VectorStore:
         self.documents = []
         self.index = None
 
-    def load_documents(self):
+    def __load_documents(self):
         loader = DirectoryLoader(self.path, glob="**/*.md")
 
         return loader.load()
 
-    def process_document(self, doc):
-        file_path = doc.metadata["source"]
+    def __get_chunks(self, file_path):
         with open(file_path, "r", encoding="utf-8") as file:
             content = file.read()
 
@@ -30,11 +29,15 @@ class VectorStore:
         text_splitter = MarkdownTextSplitter(
             chunk_size=self.chunk_size, chunk_overlap=self.chunk_overlap
         )
-        doc_chunks = text_splitter.split_text(doc_text)
 
-        return [Document(page_content=chunk) for chunk in doc_chunks]
+        return text_splitter.split_text(doc_text)
 
-    def create_index(self):
+    def __process_document(self, doc):
+        chunks = self.__get_chunks(doc.metadata["source"])
+
+        return [Document(page_content=chunk) for chunk in chunks]
+
+    def __create_index(self):
         embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
         self.index = VectorstoreIndexCreator(embedding=embeddings).from_documents(
             self.documents
@@ -43,8 +46,8 @@ class VectorStore:
         return self.index
 
     def build_vector_store(self):
-        docs = self.load_documents()
+        docs = self.__load_documents()
         for doc in docs:
-            self.documents.extend(self.process_document(doc))
+            self.documents.extend(self.__process_document(doc))
 
-        return self.create_index()
+        return self.__create_index()
