@@ -1,18 +1,25 @@
-import asyncio
 import argparse
 import os
 from assistant import Assistant
 
 
-async def main(model_path):
-    assistant = Assistant(model_path=model_path)
-    question = input("Enter your question (or type '/bye' to exit): ")
+def streaming_handler(token):
+    print(f"----({token})----")
 
-    while not assistant.should_exit(question):
-        async for token in assistant.ask(question):
-            pass  # Tokens are printed by the custom handler
-        question = input("Enter your question (or type '/bye' to exit): ")
-    assistant.say_goodbye()
+
+def main(model_path):
+    assistant = Assistant(model_path=model_path)
+    assistant.set_streaming_handler(streaming_handler)
+
+    while True:
+        question = input("\n(AI) What would you like to know about us?\n> ")
+
+        if assistant.should_exit(question):
+            assistant.say_goodbye()
+            break
+
+        answer = assistant.ask(question)
+        print(f"\n{answer}")
 
 
 def parse_args():
@@ -32,4 +39,4 @@ if __name__ == "__main__":
     args = parse_args()
     model_path = os.path.expanduser(args.model_path)
 
-    asyncio.run(main(model_path))
+    main(model_path)

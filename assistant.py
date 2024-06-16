@@ -4,16 +4,20 @@ import data.prepare as data_prep
 from vector_store.index import VectorStore
 from config import TMP_DATA_SOURCE_PATH
 from langchain_core.prompts import PromptTemplate
-from prompts.pre_prompt import PREPROMPT
 from langchain_community.llms import LlamaCpp
 from langchain_core.callbacks import CallbackManager
 from langchain_core.callbacks.base import BaseCallbackHandler
 
 
-# Placeholder. TODO: update
 class CustomStreamingHandler(BaseCallbackHandler):
+    def __default_handler(token):
+        print(f"Token: [{token}]")
+
+    def __init__(self, handler_function=__default_handler):
+        self.handler_function = handler_function
+
     def on_llm_new_token(self, token, **kwargs):
-        print(f">>>>>>>({token})<<<<<<<")
+        self.handler_function(token)
 
 
 class Assistant:
@@ -31,23 +35,18 @@ class Assistant:
         self.vector_store_index = VectorStore(
             path=TMP_DATA_SOURCE_PATH
         ).build_vector_store()
-        self.prompt_template = PromptTemplate.from_template(PREPROMPT)
 
-    def __formatted_query_for(self, question, context):
-        return self.prompt_template.format(query=question, context=context)
+    def set_streaming_handler(self, streaming_handler):
+        for handler in self.callback_manager.handlers:
+            if isinstance(handler, CustomStreamingHandler):
+                handler.handler_function = streaming_handler
 
-    async def ask(self, question: str) -> AsyncGenerator[str, None]:
+    def ask(self, question):
         try:
-            results = self.vector_store_index.query(question, llm=self.llm)
-            context = " ".join(
-                [getattr(doc, "page_content", str(doc)) for doc in results]
-            )
-            formatted_query = self.__formatted_query_for(question, context)
-            async for token in self.llm.astream(formatted_query):
-                yield token
+            return self.vector_store_index.query(question, llm=self.llm)
         except Exception as e:
             print(e)
-            yield f"An error occurred: {e}"
+            return f"An error occurred: {e}"
 
     def should_exit(self, question: str) -> bool:
         return question.strip().lower() == "/bye"
