@@ -8,6 +8,7 @@ from prompts.pre_prompt import PREPROMPT
 from langchain_community.llms import LlamaCpp
 from langchain_core.callbacks import CallbackManager
 from langchain_core.callbacks.base import BaseCallbackHandler
+import os
 
 
 class CustomStreamingHandler(BaseCallbackHandler):
@@ -19,7 +20,7 @@ class Assistant:
     def __init__(self):
         self.callback_manager = CallbackManager([CustomStreamingHandler()])
         self.llm = LlamaCpp(
-            model_path="/Users/razvan/llms/ggml-model-Q8_0.gguf",  # TODO: Fix ~ expansion not working
+            model_path=os.path.expanduser("~/llms/ggml-model-Q8_0.gguf"),
             temperature=0,
             max_tokens=1000,
             top_p=1,
