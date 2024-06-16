@@ -11,7 +11,8 @@ from custom_streaming_handler import CustomStreamingHandler
 
 class Assistant:
     def __init__(self, model_path):
-        self.callback_manager = CallbackManager([CustomStreamingHandler()])
+        self.streaming_handler = CustomStreamingHandler()
+        self.callback_manager = CallbackManager([self.streaming_handler])
         self.llm = LlamaCpp(
             model_path=model_path,
             temperature=TEMPERATURE,
@@ -25,10 +26,8 @@ class Assistant:
             path=TMP_DATA_SOURCE_PATH
         ).build_vector_store()
 
-    def set_streaming_handler(self, streaming_handler):
-        for handler in self.callback_manager.handlers:
-            if isinstance(handler, CustomStreamingHandler):
-                handler.handler_function = streaming_handler
+    def set_streaming_handler_function(self, handler_function):
+        self.streaming_handler.set_handler_function(handler_function)
 
     def ask(self, question):
         try:
@@ -37,7 +36,7 @@ class Assistant:
             print(e)
             return f"An error occurred: {e}"
 
-    def should_exit(self, question: str) -> bool:
+    def should_exit(self, question):
         return question.strip().lower() == "/bye"
 
     def say_goodbye(self):

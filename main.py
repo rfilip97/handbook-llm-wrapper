@@ -3,13 +3,13 @@ import os
 from assistant import Assistant
 
 
-def streaming_handler(token):
+def streaming_handler_function(token):
     print(f"----({token})----")
 
 
 def main(model_path):
     assistant = Assistant(model_path=model_path)
-    assistant.set_streaming_handler(streaming_handler)
+    assistant.set_streaming_handler_function(streaming_handler_function)
 
     while True:
         question = input("\n(AI) What would you like to know about us?\n> ")
@@ -26,13 +26,12 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description="Run the assistant with a specific model path."
     )
+
     parser.add_argument(
         "--model_path", type=str, help="Path to the model file", required=True
     )
 
-    args = parser.parse_args()
-
-    return args
+    return parser.parse_args()
 
 
 if __name__ == "__main__":
