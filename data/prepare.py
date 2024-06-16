@@ -1,7 +1,6 @@
 import subprocess
 import os
 import shutil
-
 from config import REPO_URL, TMP_HANDBOOK_PATH, TMP_DATA_SOURCE_PATH
 
 
@@ -28,13 +27,26 @@ def copy_md_files():
     if not os.path.exists(TMP_DATA_SOURCE_PATH):
         os.makedirs(TMP_DATA_SOURCE_PATH)
 
-    for root, dirs, files in os.walk(TMP_HANDBOOK_PATH):
-        for file in files:
-            if file.endswith(".md") and not file.startswith("_"):
-                parts = root.split(os.sep)
+    for root_path, _, files in os.walk(TMP_HANDBOOK_PATH):
+        for filename in files:
+            if is_valid_folder(root_path) and is_valid_file(filename):
+                copy_file(filename, root_path, TMP_DATA_SOURCE_PATH)
 
-                if len(parts) > 1 and parts[-1].startswith("_"):
-                    source_file = os.path.join(root, file)
-                    target_file = os.path.join(TMP_DATA_SOURCE_PATH, file)
-                    shutil.copy2(source_file, target_file)
-                    print(f"Copied {source_file} to {target_file}")
+
+def is_valid_file(file):
+    return file.endswith(".md") and not file.startswith("_")
+
+
+def is_valid_folder(root_path):
+    parts = root_path.split(os.sep)
+
+    return len(parts) > 1 and parts[-1].startswith("_")
+
+
+def copy_file(filename, containing_folder, target_folder):
+    source_file = os.path.join(containing_folder, filename)
+    target_file = os.path.join(target_folder, filename)
+
+    shutil.copy2(source_file, target_file)
+
+    print(f"Copied {source_file} to {target_file}")
