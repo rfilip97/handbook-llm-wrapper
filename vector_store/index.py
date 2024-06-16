@@ -1,7 +1,7 @@
 from langchain_community.document_loaders import DirectoryLoader
 from langchain.indexes import VectorstoreIndexCreator
 from langchain.text_splitter import MarkdownTextSplitter
-from langchain.embeddings import SentenceTransformerEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from unstructured.partition.text import partition_text
 from langchain.docstore.document import Document
 from config import CHUNK_SIZE, CHUNK_OVERLAP
@@ -35,7 +35,7 @@ class VectorStore:
         return [Document(page_content=chunk) for chunk in doc_chunks]
 
     def create_index(self):
-        embeddings = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+        embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
         self.index = VectorstoreIndexCreator(embedding=embeddings).from_documents(
             self.documents
         )
