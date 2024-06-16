@@ -6,18 +6,7 @@ from config import TMP_DATA_SOURCE_PATH
 from langchain_core.prompts import PromptTemplate
 from langchain_community.llms import LlamaCpp
 from langchain_core.callbacks import CallbackManager
-from langchain_core.callbacks.base import BaseCallbackHandler
-
-
-class CustomStreamingHandler(BaseCallbackHandler):
-    def __default_handler(token):
-        print(f"Token: [{token}]")
-
-    def __init__(self, handler_function=__default_handler):
-        self.handler_function = handler_function
-
-    def on_llm_new_token(self, token, **kwargs):
-        self.handler_function(token)
+from custom_streaming_handler import CustomStreamingHandler
 
 
 class Assistant:
