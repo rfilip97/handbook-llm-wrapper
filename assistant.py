@@ -2,7 +2,7 @@ import asyncio
 from typing import Optional, Dict, Any, AsyncGenerator
 import data.prepare as data_prep
 from vector_store.index import VectorStore
-from config import TMP_DATA_SOURCE_PATH, MODEL_NAME
+from config import TMP_DATA_SOURCE_PATH
 from langchain_core.prompts import PromptTemplate
 from prompts.pre_prompt import PREPROMPT
 from langchain_community.llms import LlamaCpp
