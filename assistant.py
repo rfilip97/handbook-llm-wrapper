@@ -8,7 +8,6 @@ from prompts.pre_prompt import PREPROMPT
 from langchain_community.llms import LlamaCpp
 from langchain_core.callbacks import CallbackManager
 from langchain_core.callbacks.base import BaseCallbackHandler
-import os
 
 
 class CustomStreamingHandler(BaseCallbackHandler):
@@ -17,10 +16,10 @@ class CustomStreamingHandler(BaseCallbackHandler):
 
 
 class Assistant:
-    def __init__(self):
+    def __init__(self, model_path):
         self.callback_manager = CallbackManager([CustomStreamingHandler()])
         self.llm = LlamaCpp(
-            model_path=os.path.expanduser("~/llms/ggml-model-Q8_0.gguf"),
+            model_path=model_path,
             temperature=0,
             max_tokens=1000,
             top_p=1,
