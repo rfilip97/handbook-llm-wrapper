@@ -19,7 +19,7 @@ class Assistant:
     def __init__(self):
         self.callback_manager = CallbackManager([CustomStreamingHandler()])
         self.llm = LlamaCpp(
-            model_path="/Users/razvan/llms/ggml-model-Q4_1.gguf",  # TODO: Fix ~ expansion not working
+            model_path="/Users/razvan/llms/ggml-model-Q8_0.gguf",  # TODO: Fix ~ expansion not working
             temperature=0,
             max_tokens=1000,
             top_p=1,
@@ -31,7 +31,6 @@ class Assistant:
             path=TMP_DATA_SOURCE_PATH
         ).build_vector_store()
         self.prompt_template = PromptTemplate.from_template(PREPROMPT)
-        self.max_context_length = 512
 
     def __formatted_query_for(self, question, context):
         return self.prompt_template.format(query=question, context=context)
@@ -46,6 +45,7 @@ class Assistant:
             async for token in self.llm.astream(formatted_query):
                 yield token
         except Exception as e:
+            print(e)
             yield f"An error occurred: {e}"
 
     def should_exit(self, question: str) -> bool:
