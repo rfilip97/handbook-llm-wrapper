@@ -16,9 +16,7 @@ class VectorStore:
         self.index = None
 
     def __load_documents(self):
-        loader = DirectoryLoader(self.path, glob="**/*.md")
-
-        return loader.load()
+        return DirectoryLoader(self.path, glob="**/*.md").load()
 
     def __get_chunks(self, file_path):
         with open(file_path, "r", encoding="utf-8") as file:

@@ -1,7 +1,7 @@
 import asyncio
 from typing import Optional, Dict, Any, AsyncGenerator
 import data.prepare as data_prep
-from vector_store.index import VectorStore
+from vector_store import VectorStore
 from config import TMP_DATA_SOURCE_PATH, TEMPERATURE, TOP_P, MAX_TOKENS
 from langchain_core.prompts import PromptTemplate
 from langchain_community.llms import LlamaCpp
