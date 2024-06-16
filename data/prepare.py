@@ -32,7 +32,7 @@ def copy_md_files():
         for file in files:
             if file.endswith(".md") and not file.startswith("_"):
                 parts = root.split(os.sep)
-                print(parts)
+
                 if len(parts) > 1 and parts[-1].startswith("_"):
                     source_file = os.path.join(root, file)
                     target_file = os.path.join(TMP_DATA_SOURCE_PATH, file)
