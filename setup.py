@@ -4,7 +4,7 @@ setup(
     name="handbook_llm_wrapper",
     version="0.1.0",
     description="An assistant package",
-    packages=find_packages(include=['handbook_llm_wrapper', 'handbook_llm_wrapper.*']),
+    packages=find_packages(include=["handbook_llm_wrapper", "handbook_llm_wrapper.*"]),
     install_requires=[
         "langchain_community",
         "pickle-mixin",
@@ -21,4 +21,3 @@ setup(
     },
     python_requires=">=3.12",
 )
-

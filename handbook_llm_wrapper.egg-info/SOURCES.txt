@@ -12,3 +12,5 @@ handbook_llm_wrapper.egg-info/dependency_links.txt
 handbook_llm_wrapper.egg-info/entry_points.txt
 handbook_llm_wrapper.egg-info/requires.txt
 handbook_llm_wrapper.egg-info/top_level.txt
+handbook_llm_wrapper/data/__init__.py
+handbook_llm_wrapper/data/prepare.py

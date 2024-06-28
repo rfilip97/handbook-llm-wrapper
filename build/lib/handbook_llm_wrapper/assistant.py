@@ -1,12 +1,12 @@
 import asyncio
 from typing import Optional, Dict, Any, AsyncGenerator
-import data.prepare as data_prep
-from vector_store import VectorStore
-from config import TMP_DATA_SOURCE_PATH, TEMPERATURE, TOP_P, MAX_TOKENS
+import handbook_llm_wrapper.data.prepare as data_prep
+from handbook_llm_wrapper.vector_store import VectorStore
+from handbook_llm_wrapper.config import TMP_DATA_SOURCE_PATH, TEMPERATURE, TOP_P, MAX_TOKENS
 from langchain_core.prompts import PromptTemplate
 from langchain_community.llms import LlamaCpp
 from langchain_core.callbacks import CallbackManager
-from custom_streaming_handler import CustomStreamingHandler
+from handbook_llm_wrapper.custom_streaming_handler import CustomStreamingHandler
 
 
 class Assistant:

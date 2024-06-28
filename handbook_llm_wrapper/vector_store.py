@@ -4,7 +4,7 @@ from langchain.text_splitter import MarkdownTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from unstructured.partition.text import partition_text
 from langchain.docstore.document import Document
-from config import CHUNK_SIZE, CHUNK_OVERLAP
+from handbook_llm_wrapper.config import CHUNK_SIZE, CHUNK_OVERLAP
 
 
 class VectorStore:
