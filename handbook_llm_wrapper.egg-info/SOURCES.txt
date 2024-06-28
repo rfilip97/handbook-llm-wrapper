@@ -1,5 +1,11 @@
 README.md
 setup.py
+handbook_llm_wrapper/__init__.py
+handbook_llm_wrapper/assistant.py
+handbook_llm_wrapper/config.py
+handbook_llm_wrapper/custom_streaming_handler.py
+handbook_llm_wrapper/main.py
+handbook_llm_wrapper/vector_store.py
 handbook_llm_wrapper.egg-info/PKG-INFO
 handbook_llm_wrapper.egg-info/SOURCES.txt
 handbook_llm_wrapper.egg-info/dependency_links.txt
