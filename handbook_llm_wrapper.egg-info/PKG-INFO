@@ -1,0 +1,12 @@
+Metadata-Version: 2.1
+Name: handbook_llm_wrapper
+Version: 0.1.0
+Summary: An assistant package
+Requires-Python: >=3.12
+Requires-Dist: langchain_community
+Requires-Dist: pickle-mixin
+Requires-Dist: faiss-cpu
+Requires-Dist: langchain
+Requires-Dist: llama-cpp-python
+Requires-Dist: unstructured[md]
+Requires-Dist: sentence-transformers

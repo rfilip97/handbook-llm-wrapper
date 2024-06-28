@@ -5,5 +5,3 @@ langchain
 llama-cpp-python
 unstructured[md]
 sentence-transformers
-langchain-huggingface
-wheel
